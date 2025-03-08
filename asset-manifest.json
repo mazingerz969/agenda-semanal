@@ -1,0 +1,12 @@
+{
+  "files": {
+    "main.css": "/agenda-semanal/static/css/main.bcc8ab0e.css",
+    "main.js": "/agenda-semanal/static/js/main.e4dd0227.js",
+    "static/js/206.1df55716.chunk.js": "/agenda-semanal/static/js/206.1df55716.chunk.js",
+    "index.html": "/agenda-semanal/index.html"
+  },
+  "entrypoints": [
+    "static/css/main.bcc8ab0e.css",
+    "static/js/main.e4dd0227.js"
+  ]
+}
