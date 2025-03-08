@@ -1,0 +1,6 @@
+@echo off
+echo Construyendo la aplicación...
+call npm run build
+echo Desplegando en GitHub Pages...
+call npx gh-pages -d build
+echo Despliegue completado! 

@@ -1,70 +1,105 @@
-# Getting Started with Create React App
+# Agenda Semanal
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Descripción
 
-## Available Scripts
+Agenda Semanal es una aplicación web desarrollada con React que te permite organizar tus tareas semanales de forma eficiente. Con una interfaz intuitiva y amigable, podrás gestionar tu tiempo y aumentar tu productividad.
 
-In the project directory, you can run:
+## Características principales
 
-### `npm start`
+- ✅ Organización de tareas por día de la semana
+- 🌙 Soporte para modo oscuro
+- 📱 Diseño responsivo para todos los dispositivos
+- 🔄 Persistencia de datos mediante almacenamiento local
+- 🏷️ Etiquetas personalizadas para categorizar tareas
+- 🔍 Filtrado y búsqueda de tareas
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Demo
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Puedes ver la aplicación en funcionamiento aquí: [https://mazingerz969.github.io/agenda-semanal/](https://mazingerz969.github.io/agenda-semanal/)
 
-### `npm test`
+![Captura de pantalla de la aplicación](https://i.imgur.com/example.png) <!-- Reemplaza con una captura real de tu app -->
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Tecnologías utilizadas
 
-### `npm run build`
+- React
+- Tailwind CSS
+- LocalStorage API
+- GitHub Pages
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Instalación local
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Para ejecutar esta aplicación en tu entorno local:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Clona este repositorio:
+   ```bash
+   git clone https://github.com/mazingerz969/agenda-semanal.git
+   ```
 
-### `npm run eject`
+2. Navega al directorio del proyecto:
+   ```bash
+   cd agenda-semanal
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3. Instala las dependencias:
+   ```bash
+   npm install
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+4. Inicia el servidor de desarrollo:
+   ```bash
+   npm start
+   ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+5. Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Despliegue
 
-## Learn More
+La aplicación está configurada para desplegarse en GitHub Pages. Para desplegar una nueva versión:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+npm run build
+npm run deploy
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Uso
 
-### Code Splitting
+1. **Añadir tarea**: Haz clic en el día deseado y completa el formulario
+2. **Editar tarea**: Selecciona una tarea existente para modificarla
+3. **Eliminar tarea**: Utiliza el botón de eliminar en cada tarea
+4. **Cambiar tema**: Alterna entre modo claro y oscuro con el botón en la barra superior
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Estructura del proyecto
 
-### Analyzing the Bundle Size
+```
+agenda-semanal/
+├── public/          # Archivos estáticos y configuración PWA
+├── src/
+│   ├── components/  # Componentes React reutilizables
+│   ├── hooks/       # Custom hooks
+│   ├── context/     # Contextos de React
+│   ├── App.js       # Componente principal
+│   └── index.js     # Punto de entrada
+└── package.json     # Dependencias y scripts
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Contribuciones
 
-### Making a Progressive Web App
+Las contribuciones son bienvenidas. Si deseas mejorar esta aplicación:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+1. Haz un fork del repositorio
+2. Crea una rama para tu característica (`git checkout -b feature/nueva-funcionalidad`)
+3. Realiza tus cambios y haz commit (`git commit -m 'Añadir nueva funcionalidad'`)
+4. Sube tus cambios (`git push origin feature/nueva-funcionalidad`)
+5. Abre un Pull Request
 
-### Advanced Configuration
+## Licencia
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Este proyecto está licenciado bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
 
-### Deployment
+## Contacto
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Si tienes preguntas o sugerencias, no dudes en abrir un issue o contactarme directamente.
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Desarrollado con ❤️ por [Mazingerz969](https://github.com/mazingerz969)
