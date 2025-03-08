@@ -17,10 +17,10 @@
     "recharts": "^2.15.1",
     "web-vitals": "^2.1.4"
   },
-  "homepage": "https://github.com/mazingerz969/agenda-semanal.git",
+  "homepage": "https://mazingerz969.github.io/agenda-semanal",
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "DISABLE_ESLINT_PLUGIN=true GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
