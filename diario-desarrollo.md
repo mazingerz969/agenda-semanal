@@ -14,14 +14,32 @@
 -  Integración de componentes en App.js
 -  Mejora de la vista de calendario mensual para mostrar tareas
 
+## DÍA 2 (09/03/2025)
+
+### Funcionalidades implementadas hoy:
+-  Creación de rama feature/weekly-planner para desarrollo
+-  Implementación del componente WeeklyPlanner
+-  Formulario para añadir/editar tareas
+-  Funcionalidad para marcar tareas como completadas
+-  Integración con el sistema de almacenamiento local
+-  Sistema de etiquetas personalizadas:
+  - Componente TagSelector para gestionar etiquetas
+  - Funcionalidad para crear, editar y eliminar etiquetas
+  - Selector de colores para etiquetas
+  - Integración de etiquetas en tareas
+-  Implementación de modo oscuro/claro:
+  - Contexto ThemeContext para gestionar el tema
+  - Componente ThemeToggle para cambiar entre modos
+  - Persistencia de la preferencia en localStorage
+  - Detección automática de preferencia del sistema
+
 ### Pendiente para mañana:
-- [ ] Implementar el componente WeeklyPlanner para la vista semanal
-- [ ] Crear formulario para añadir/editar tareas
-- [ ] Integrar el sistema de notificaciones con las tareas programadas
-- [ ] Añadir funcionalidad de etiquetas personalizadas
+- [ ] Añadir arrastrar y soltar para reorganizar tareas
+- [ ] Mejorar la integración con el sistema de notificaciones
 - [ ] Implementar filtrado y búsqueda de tareas
+- [ ] Añadir recordatorios recurrentes
 
 ### Notas adicionales:
-- Revisar la compatibilidad de las notificaciones en diferentes navegadores
-- Considerar añadir un selector de colores para las etiquetas de tareas
-- Investigar opciones para sincronización con Google Calendar
+- Considerar añadir un sistema de categorías además de etiquetas
+- Explorar opciones para sincronización con servicios de calendario
+- Mejorar la visualización en dispositivos móviles

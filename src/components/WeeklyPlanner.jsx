@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Plus, Check, X, Edit2, Trash2 } from 'lucide-react';
+﻿import React, { useState } from 'react';
+import { Plus, Check, X, Edit2, Trash2, Tag } from 'lucide-react';
+import TagSelector from './TagSelector';
 
 function WeeklyPlanner({ tasks = [], setTasks }) {
   const [selectedDay, setSelectedDay] = useState(new Date().getDay());
@@ -9,7 +10,8 @@ function WeeklyPlanner({ tasks = [], setTasks }) {
     title: '',
     description: '',
     priority: 'medium',
-    date: new Date().toISOString().split('T')[0]
+    date: new Date().toISOString().split('T')[0],
+    tags: []
   });
 
   const days = [
@@ -55,7 +57,8 @@ function WeeklyPlanner({ tasks = [], setTasks }) {
       title: '',
       description: '',
       priority: 'medium',
-      date: new Date().toISOString().split('T')[0]
+      date: new Date().toISOString().split('T')[0],
+      tags: []
     });
     setShowTaskForm(false);
     setEditingTask(null);
@@ -80,9 +83,20 @@ function WeeklyPlanner({ tasks = [], setTasks }) {
       title: task.title,
       description: task.description || '',
       priority: task.priority,
-      date: new Date(task.date).toISOString().split('T')[0]
+      date: new Date(task.date).toISOString().split('T')[0],
+      tags: task.tags || []
     });
     setShowTaskForm(true);
+  };
+
+  // Obtener etiquetas para una tarea
+  const getTagsForTask = (task) => {
+    // Obtener todas las etiquetas disponibles
+    const savedTags = localStorage.getItem('agenda-tags');
+    const allTags = savedTags ? JSON.parse(savedTags) : [];
+    
+    // Filtrar solo las etiquetas que están en la tarea
+    return allTags.filter(tag => task.tags && task.tags.includes(tag.id));
   };
 
   return (
@@ -93,11 +107,7 @@ function WeeklyPlanner({ tasks = [], setTasks }) {
           <button
             key={day.id}
             onClick={() => setSelectedDay(day.id)}
-            className={`flex-1 py-3 text-center ${
-              selectedDay === day.id
-                ? 'bg-indigo-50 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-300 font-medium'
-                : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700'
-            }`}
+            className={lex-1 py-3 text-center }
           >
             <span className="hidden md:block">{day.name}</span>
             <span className="md:hidden">{day.shortName}</span>
@@ -132,59 +142,79 @@ function WeeklyPlanner({ tasks = [], setTasks }) {
               No hay tareas para este día
             </p>
           ) : (
-            getTasksForDay(selectedDay).map(task => (
-              <div
-                key={task.id}
-                className={`p-3 rounded-md border ${
-                  task.completed
-                    ? 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900'
-                    : task.priority === 'high'
-                    ? 'border-red-200 dark:border-red-900 bg-red-50 dark:bg-red-900/20'
-                    : task.priority === 'medium'
-                    ? 'border-yellow-200 dark:border-yellow-900 bg-yellow-50 dark:bg-yellow-900/20'
-                    : 'border-green-200 dark:border-green-900 bg-green-50 dark:bg-green-900/20'
-                }`}
-              >
-                <div className="flex justify-between items-start">
-                  <div className="flex items-start gap-2">
-                    <button
-                      onClick={() => handleToggleComplete(task.id)}
-                      className={`mt-1 p-1 rounded-full ${
-                        task.completed
-                          ? 'bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300'
-                          : 'bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-gray-500'
-                      }`}
-                    >
-                      <Check size={14} />
-                    </button>
-                    <div>
-                      <h3 className={`font-medium ${task.completed ? 'line-through text-gray-400 dark:text-gray-500' : ''}`}>
-                        {task.title}
-                      </h3>
-                      {task.description && (
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                          {task.description}
-                        </p>
-                      )}
+            getTasksForDay(selectedDay).map(task => {
+              const taskTags = getTagsForTask(task);
+              
+              return (
+                <div
+                  key={task.id}
+                  className={p-3 rounded-md border }
+                >
+                  <div className="flex justify-between items-start">
+                    <div className="flex items-start gap-2">
+                      <button
+                        onClick={() => handleToggleComplete(task.id)}
+                        className={mt-1 p-1 rounded-full }
+                      >
+                        <Check size={14} />
+                      </button>
+                      <div>
+                        <h3 className={ont-medium }>
+                          {task.title}
+                        </h3>
+                        {task.description && (
+                          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                            {task.description}
+                          </p>
+                        )}
+                        
+                        {/* Mostrar etiquetas */}
+                        {taskTags.length > 0 && (
+                          <div className="flex flex-wrap gap-1 mt-2">
+                            {taskTags.map(tag => {
+                              const COLORS = [
+                                { bg: 'bg-red-100', text: 'text-red-800', dark: 'dark:bg-red-900/20 dark:text-red-300' },
+                                { bg: 'bg-orange-100', text: 'text-orange-800', dark: 'dark:bg-orange-900/20 dark:text-orange-300' },
+                                { bg: 'bg-yellow-100', text: 'text-yellow-800', dark: 'dark:bg-yellow-900/20 dark:text-yellow-300' },
+                                { bg: 'bg-green-100', text: 'text-green-800', dark: 'dark:bg-green-900/20 dark:text-green-300' },
+                                { bg: 'bg-blue-100', text: 'text-blue-800', dark: 'dark:bg-blue-900/20 dark:text-blue-300' },
+                                { bg: 'bg-indigo-100', text: 'text-indigo-800', dark: 'dark:bg-indigo-900/20 dark:text-indigo-300' },
+                                { bg: 'bg-purple-100', text: 'text-purple-800', dark: 'dark:bg-purple-900/20 dark:text-purple-300' },
+                                { bg: 'bg-pink-100', text: 'text-pink-800', dark: 'dark:bg-pink-900/20 dark:text-pink-300' },
+                              ];
+                              const color = COLORS[tag.color];
+                              
+                              return (
+                                <span 
+                                  key={tag.id} 
+                                  className={inline-flex items-center px-2 py-0.5 rounded text-xs font-medium   }
+                                >
+                                  {tag.name}
+                                </span>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex gap-1">
+                      <button
+                        onClick={() => handleEditTask(task)}
+                        className="p-1 text-gray-400 hover:text-indigo-600 dark:text-gray-500 dark:hover:text-indigo-400"
+                      >
+                        <Edit2 size={16} />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteTask(task.id)}
+                        className="p-1 text-gray-400 hover:text-red-600 dark:text-gray-500 dark:hover:text-red-400"
+                      >
+                        <Trash2 size={16} />
+                      </button>
                     </div>
                   </div>
-                  <div className="flex gap-1">
-                    <button
-                      onClick={() => handleEditTask(task)}
-                      className="p-1 text-gray-400 hover:text-indigo-600 dark:text-gray-500 dark:hover:text-indigo-400"
-                    >
-                      <Edit2 size={16} />
-                    </button>
-                    <button
-                      onClick={() => handleDeleteTask(task.id)}
-                      className="p-1 text-gray-400 hover:text-red-600 dark:text-gray-500 dark:hover:text-red-400"
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                  </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           )}
         </div>
       </div>
@@ -262,6 +292,16 @@ function WeeklyPlanner({ tasks = [], setTasks }) {
                 />
               </div>
               
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  Etiquetas
+                </label>
+                <TagSelector 
+                  selectedTags={newTask.tags || []} 
+                  onChange={(tags) => setNewTask({ ...newTask, tags })}
+                />
+              </div>
+              
               <div className="flex justify-end gap-2 pt-2">
                 <button
                   onClick={() => {
@@ -287,4 +327,4 @@ function WeeklyPlanner({ tasks = [], setTasks }) {
   );
 }
 
-export default WeeklyPlanner; 
+export default WeeklyPlanner;
