@@ -1,264 +1,121 @@
 import React, { useState, useEffect } from 'react';
-import { Moon, Sun, Calendar, BarChart2, Search, User as UserIcon, Settings } from 'lucide-react';
-import WeeklyPlanner from './components/WeeklyPlanner';
-import MonthlyCalendar from './components/MonthlyCalendar';
-import StatisticsPanel from './components/StatisticsPanel';
-import SearchFilter from './components/SearchFilter';
-import UserAvatar from './components/UserAvatar';
 import NotificationSystem from './components/NotificationSystem';
 import DataManager from './components/DataManager';
+import MonthlyCalendar from './components/MonthlyCalendar';
+import StatisticsPanel from './components/StatisticsPanel';
+import WeeklyPlanner from './components/WeeklyPlanner';
 
 function App() {
-  const [activeView, setActiveView] = useState('weekly');
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [userAvatar, setUserAvatar] = useState(null);
-  const [searchFilters, setSearchFilters] = useState({});
-  const [showUserSettings, setShowUserSettings] = useState(false);
-  const [tasks, setTasks] = useState({});
-  const [filteredTasks, setFilteredTasks] = useState({});
+  // Estado para almacenar las tareas
+  const [tasks, setTasks] = useState([]);
+  // Estado para controlar la vista actual (semanal o mensual)
+  const [currentView, setCurrentView] = useState('weekly');
+  // Estado para mostrar/ocultar estadísticas
+  const [showStats, setShowStats] = useState(false);
 
   // Cargar tareas desde localStorage al iniciar
   useEffect(() => {
-    const savedTasks = localStorage.getItem('tasks');
+    const savedTasks = localStorage.getItem('agenda-tasks');
     if (savedTasks) {
       setTasks(JSON.parse(savedTasks));
+    } else {
+      // Datos de ejemplo para ver algo en la interfaz
+      const exampleTasks = [
+        {
+          id: 1,
+          title: 'Reunión de equipo',
+          date: new Date(2025, 2, 10).toISOString(),
+          priority: 'high',
+          completed: false
+        },
+        {
+          id: 2,
+          title: 'Entregar informe',
+          date: new Date(2025, 2, 12).toISOString(),
+          priority: 'medium',
+          completed: true
+        },
+        {
+          id: 3,
+          title: 'Revisar correos',
+          date: new Date(2025, 2, 15).toISOString(),
+          priority: 'low',
+          completed: false
+        }
+      ];
+      setTasks(exampleTasks);
     }
   }, []);
 
-  // Guardar tareas en localStorage cuando cambien
+  // Guardar tareas en localStorage cuando cambian
   useEffect(() => {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
+    localStorage.setItem('agenda-tasks', JSON.stringify(tasks));
   }, [tasks]);
 
-  // Aplicar filtros a las tareas
-  useEffect(() => {
-    if (Object.keys(searchFilters).length === 0) {
-      setFilteredTasks(tasks);
-      return;
-    }
-
-    const filtered = {};
-    
-    Object.entries(tasks).forEach(([day, dayTasks]) => {
-      filtered[day] = dayTasks.filter(task => {
-        // Filtrar por texto de búsqueda
-        if (searchFilters.searchTerm && !task.title.toLowerCase().includes(searchFilters.searchTerm.toLowerCase()) && 
-            !task.description?.toLowerCase().includes(searchFilters.searchTerm.toLowerCase())) {
-          return false;
-        }
-        
-        // Filtrar por categoría
-        if (searchFilters.category && searchFilters.category !== 'all' && 
-            task.category !== searchFilters.category) {
-          return false;
-        }
-        
-        // Filtrar por prioridad
-        if (searchFilters.priority && searchFilters.priority !== 'all' && 
-            task.priority !== searchFilters.priority) {
-          return false;
-        }
-        
-        // Filtrar por estado
-        if (searchFilters.status === 'completada' && !task.completed) {
-          return false;
-        }
-        if (searchFilters.status === 'pendiente' && task.completed) {
-          return false;
-        }
-        
-        // Filtrar por etiquetas
-        if (searchFilters.tags && searchFilters.tags.length > 0) {
-          const hasTag = searchFilters.tags.some(tagId => 
-            task.tags && task.tags.includes(tagId)
-          );
-          if (!hasTag) return false;
-        }
-        
-        return true;
-      });
-    });
-    
-    setFilteredTasks(filtered);
-  }, [tasks, searchFilters]);
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [isDarkMode]);
-
-  useEffect(() => {
-    // Cargar preferencias del usuario desde localStorage
-    const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-    const savedAvatar = localStorage.getItem('userAvatar');
-    
-    if (savedDarkMode !== null) {
-      setIsDarkMode(savedDarkMode);
-    }
-    
-    if (savedAvatar) {
-      setUserAvatar(savedAvatar);
-    }
-  }, []);
-
-  const toggleDarkMode = () => {
-    const newMode = !isDarkMode;
-    setIsDarkMode(newMode);
-    localStorage.setItem('darkMode', newMode);
-  };
-
-  const handleAvatarChange = (avatarUrl) => {
-    setUserAvatar(avatarUrl);
-    if (avatarUrl) {
-      localStorage.setItem('userAvatar', avatarUrl);
-    } else {
-      localStorage.removeItem('userAvatar');
-    }
-  };
-
-  const handleFilterChange = (filters) => {
-    setSearchFilters(filters);
-  };
-
-  const handleTasksChange = (newTasks) => {
-    setTasks(newTasks);
-  };
-
-  const renderView = () => {
-    switch(activeView) {
-      case 'weekly':
-        return <WeeklyPlanner tasks={filteredTasks} onTasksChange={handleTasksChange} />;
-      case 'monthly':
-        return <MonthlyCalendar tasks={filteredTasks} onTasksChange={handleTasksChange} />;
-      case 'statistics':
-        return <StatisticsPanel tasks={tasks} />;
-      default:
-        return <WeeklyPlanner tasks={filteredTasks} onTasksChange={handleTasksChange} />;
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 dark:text-white transition-colors duration-300">
-      <nav className="bg-indigo-600 text-white p-4">
-        <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Agenda Semanal</h1>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+      <header className="bg-white dark:bg-gray-800 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">Agenda Semanal</h1>
+          
           <div className="flex items-center space-x-4">
-            <div className="hidden md:flex space-x-2">
-              <button 
-                onClick={() => setActiveView('weekly')}
-                className={`px-4 py-2 rounded flex items-center ${activeView === 'weekly' ? 'bg-indigo-700' : 'hover:bg-indigo-500'}`}
-              >
-                <Calendar size={18} className="mr-1" /> Semanal
-              </button>
-              <button 
-                onClick={() => setActiveView('monthly')}
-                className={`px-4 py-2 rounded flex items-center ${activeView === 'monthly' ? 'bg-indigo-700' : 'hover:bg-indigo-500'}`}
-              >
-                <Calendar size={18} className="mr-1" /> Mensual
-              </button>
-              <button 
-                onClick={() => setActiveView('statistics')}
-                className={`px-4 py-2 rounded flex items-center ${activeView === 'statistics' ? 'bg-indigo-700' : 'hover:bg-indigo-500'}`}
-              >
-                <BarChart2 size={18} className="mr-1" /> Estadísticas
-              </button>
-            </div>
-            <button 
-              onClick={toggleDarkMode}
-              className="p-2 rounded hover:bg-indigo-500 transition-colors"
-              aria-label="Cambiar modo oscuro"
-            >
-              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
-            <div className="relative">
+            <NotificationSystem />
+            <DataManager tasks={tasks} setTasks={setTasks} />
+            
+            {/* Selector de vista */}
+            <div className="flex rounded-md shadow-sm">
               <button
-                onClick={() => setShowUserSettings(!showUserSettings)}
-                className="focus:outline-none"
+                onClick={() => setCurrentView('weekly')}
+                className={`px-4 py-2 text-sm font-medium rounded-l-md ${
+                  currentView === 'weekly'
+                    ? 'bg-indigo-600 text-white'
+                    : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200'
+                }`}
               >
-                {userAvatar ? (
-                  <img 
-                    src={userAvatar} 
-                    alt="Avatar" 
-                    className="w-10 h-10 rounded-full object-cover cursor-pointer"
-                  />
-                ) : (
-                  <div className="w-10 h-10 rounded-full bg-indigo-700 flex items-center justify-center cursor-pointer">
-                    <UserIcon size={20} />
-                  </div>
-                )}
+                Semanal
               </button>
-              
-              {showUserSettings && (
-                <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 z-10">
-                  <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300">Perfil de Usuario</h3>
-                    <button 
-                      onClick={() => setShowUserSettings(false)}
-                      className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                    >
-                      <Settings size={18} />
-                    </button>
-                  </div>
-                  <div className="mb-4">
-                    <UserAvatar onAvatarChange={handleAvatarChange} />
-                  </div>
-                  <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-                    <button 
-                      onClick={toggleDarkMode}
-                      className="flex items-center text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400"
-                    >
-                      {isDarkMode ? <Sun size={16} className="mr-2" /> : <Moon size={16} className="mr-2" />}
-                      {isDarkMode ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
-                    </button>
-                  </div>
-                </div>
-              )}
+              <button
+                onClick={() => setCurrentView('monthly')}
+                className={`px-4 py-2 text-sm font-medium rounded-r-md ${
+                  currentView === 'monthly'
+                    ? 'bg-indigo-600 text-white'
+                    : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200'
+                }`}
+              >
+                Mensual
+              </button>
             </div>
           </div>
         </div>
-      </nav>
-      
-      <div className="md:hidden bg-indigo-500 text-white p-2">
-        <div className="container mx-auto flex justify-between">
-          <button 
-            onClick={() => setActiveView('weekly')}
-            className={`px-3 py-1 rounded ${activeView === 'weekly' ? 'bg-indigo-700' : ''}`}
+      </header>
+
+      <main className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+        {/* Botón para mostrar/ocultar estadísticas */}
+        <div className="mb-4 flex justify-end">
+          <button
+            onClick={() => setShowStats(!showStats)}
+            className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
           >
-            Semanal
+            {showStats ? 'Ocultar estadísticas' : 'Mostrar estadísticas'}
           </button>
-          <button 
-            onClick={() => setActiveView('monthly')}
-            className={`px-3 py-1 rounded ${activeView === 'monthly' ? 'bg-indigo-700' : ''}`}
-          >
-            Mensual
-          </button>
-          <button 
-            onClick={() => setActiveView('statistics')}
-            className={`px-3 py-1 rounded ${activeView === 'statistics' ? 'bg-indigo-700' : ''}`}
-          >
-            Estadísticas
-          </button>
-        </div>
-      </div>
-      
-      <main className="container mx-auto mt-8 px-4">
-        <div className="mb-6">
-          <SearchFilter onFilterChange={handleFilterChange} />
         </div>
         
-        {renderView()}
+        {/* Panel de estadísticas */}
+        {showStats && (
+          <div className="mb-6">
+            <StatisticsPanel tasks={tasks} />
+          </div>
+        )}
+        
+        {/* Vistas */}
+        {currentView === 'weekly' ? (
+          <WeeklyPlanner tasks={tasks} setTasks={setTasks} />
+        ) : (
+          <MonthlyCalendar tasks={tasks} />
+        )}
       </main>
-      
-      <footer className="mt-12 py-6 bg-gray-100 dark:bg-gray-800">
-        <div className="container mx-auto px-4 text-center text-gray-600 dark:text-gray-400">
-          <p>Agenda Semanal &copy; {new Date().getFullYear()}</p>
-        </div>
-      </footer>
     </div>
   );
 }
 
-export default App;
+export default App; 
