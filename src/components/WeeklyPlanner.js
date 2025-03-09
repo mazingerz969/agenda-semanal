@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, Edit, Calendar, Clock, Tag, Repeat, Image as ImageIcon } from 'lucide-react';
+import React, { useState } from 'react';
+// eslint-disable-next-line no-unused-vars
+import { Plus, Trash2, CheckCircle, Circle, Clock, Calendar } from 'lucide-react';
 import CustomTagSelector from './CustomTagSelector';
 import RecurringTaskOptions from './RecurringTaskOptions';
 import TaskImagePicker from './TaskImagePicker';
 
-const WeeklyPlanner = ({ tasks = {}, onTasksChange }) => {
+const WeeklyPlanner = ({ tasks = [], setTasks }) => {
   const [selectedDay, setSelectedDay] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [currentTask, setCurrentTask] = useState(null);
@@ -28,7 +29,7 @@ const WeeklyPlanner = ({ tasks = {}, onTasksChange }) => {
   };
 
   const openEditModal = (day, taskId) => {
-    const task = tasks[day]?.find(t => t.id === taskId);
+    const task = tasks.find(t => t.id === taskId);
     if (task) {
       setCurrentTask(task);
       setTaskTitle(task.title);
@@ -80,43 +81,29 @@ const WeeklyPlanner = ({ tasks = {}, onTasksChange }) => {
         completed: isEditing ? currentTask.completed : false,
       };
 
-      const updatedTasks = { ...tasks };
-      
-      if (!updatedTasks[selectedDay]) {
-        updatedTasks[selectedDay] = [];
-      }
+      const updatedTasks = [...tasks];
       
       if (isEditing) {
-        updatedTasks[selectedDay] = updatedTasks[selectedDay].map(task => 
-          task.id === currentTask.id ? newTask : task
-        );
+        updatedTasks[tasks.findIndex(t => t.id === currentTask.id)] = newTask;
       } else {
-        updatedTasks[selectedDay] = [...updatedTasks[selectedDay], newTask];
+        updatedTasks.push(newTask);
       }
       
-      onTasksChange(updatedTasks);
+      setTasks(updatedTasks);
       closeModal();
     }
   };
 
-  const removeTask = (day, taskId) => {
-    const updatedTasks = { ...tasks };
-    
-    if (updatedTasks[day]) {
-      updatedTasks[day] = updatedTasks[day].filter(task => task.id !== taskId);
-      onTasksChange(updatedTasks);
-    }
+  const removeTask = (taskId) => {
+    const updatedTasks = tasks.filter(task => task.id !== taskId);
+    setTasks(updatedTasks);
   };
 
-  const toggleTaskCompletion = (day, taskId) => {
-    const updatedTasks = { ...tasks };
-    
-    if (updatedTasks[day]) {
-      updatedTasks[day] = updatedTasks[day].map(task => 
-        task.id === taskId ? { ...task, completed: !task.completed } : task
-      );
-      onTasksChange(updatedTasks);
-    }
+  const toggleTaskCompletion = (taskId) => {
+    const updatedTasks = tasks.map(task => 
+      task.id === taskId ? { ...task, completed: !task.completed } : task
+    );
+    setTasks(updatedTasks);
   };
 
   const getPriorityColor = (priority) => {
@@ -128,6 +115,7 @@ const WeeklyPlanner = ({ tasks = {}, onTasksChange }) => {
     }
   };
 
+  // eslint-disable-next-line no-unused-vars
   const getCategoryIcon = (category) => {
     switch (category) {
       case 'trabajo': return '💼';
@@ -151,7 +139,7 @@ const WeeklyPlanner = ({ tasks = {}, onTasksChange }) => {
           >
             <h2 className="font-semibold text-indigo-500 dark:text-indigo-300 mb-2">{day}</h2>
             <div className="space-y-2">
-              {tasks[day]?.map((task) => (
+              {tasks.map((task) => (
                 <div 
                   key={task.id} 
                   className={`flex items-center justify-between p-2 rounded ${
@@ -172,7 +160,7 @@ const WeeklyPlanner = ({ tasks = {}, onTasksChange }) => {
                     <button 
                       onClick={(e) => {
                         e.stopPropagation();
-                        toggleTaskCompletion(day, task.id);
+                        toggleTaskCompletion(task.id);
                       }}
                       className="text-gray-500 hover:text-indigo-600 mr-1"
                     >
@@ -185,7 +173,7 @@ const WeeklyPlanner = ({ tasks = {}, onTasksChange }) => {
                     <button 
                       onClick={(e) => {
                         e.stopPropagation();
-                        removeTask(day, task.id);
+                        removeTask(task.id);
                       }}
                       className="text-red-500 hover:text-red-700"
                     >

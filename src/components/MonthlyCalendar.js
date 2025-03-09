@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-const MonthlyCalendar = ({ tasks = {}, onTasksChange }) => {
+const MonthlyCalendar = ({ tasks = [], setTasks }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDay, setSelectedDay] = useState(null);
 
@@ -68,6 +68,7 @@ const MonthlyCalendar = ({ tasks = {}, onTasksChange }) => {
     setCurrentDate(newDate);
   };
 
+  // eslint-disable-next-line no-unused-vars
   const formatDateKey = (date) => {
     return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
   };
@@ -79,7 +80,7 @@ const MonthlyCalendar = ({ tasks = {}, onTasksChange }) => {
     const dayName = dayNames[dayIndex];
     
     // Buscar tareas para ese día de la semana
-    const dayTasks = tasks[dayName] || [];
+    const dayTasks = tasks.filter(task => task.day === dayName);
     
     // Filtrar tareas por fecha específica si tienen fecha
     return dayTasks.filter(task => {
@@ -95,14 +96,13 @@ const MonthlyCalendar = ({ tasks = {}, onTasksChange }) => {
   };
 
   const toggleTaskCompletion = (taskId, dayName) => {
-    if (!tasks[dayName]) return;
+    if (!tasks.some(task => task.day === dayName)) return;
     
-    const updatedTasks = { ...tasks };
-    updatedTasks[dayName] = updatedTasks[dayName].map(task => 
+    const updatedTasks = tasks.map(task => 
       task.id === taskId ? { ...task, completed: !task.completed } : task
     );
     
-    onTasksChange(updatedTasks);
+    setTasks(updatedTasks);
   };
 
   const calendarDays = generateCalendarDays();

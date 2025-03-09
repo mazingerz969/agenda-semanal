@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
-const StatisticsPanel = ({ tasks = {} }) => {
+const StatisticsPanel = ({ tasks = [] }) => {
   const [tasksByDay, setTasksByDay] = useState([]);
   const [tasksByCategory, setTasksByCategory] = useState([]);
   const [tasksByPriority, setTasksByPriority] = useState([]);
@@ -14,9 +14,8 @@ const StatisticsPanel = ({ tasks = {} }) => {
 
   useEffect(() => {
     // Procesar estadísticas cuando cambian las tareas
-    const allTasks = Object.values(tasks).flat();
-    if (allTasks.length > 0) {
-      processStatistics(allTasks);
+    if (Array.isArray(tasks) && tasks.length > 0) {
+      processStatistics(tasks);
     } else {
       // Usar datos de ejemplo si no hay tareas
       setTasksByDay([
@@ -38,53 +37,41 @@ const StatisticsPanel = ({ tasks = {} }) => {
       
       setTasksByPriority([
         { name: 'Alta', value: 25 },
-        { name: 'Media', value: 45 },
-        { name: 'Baja', value: 30 },
+        { name: 'Media', value: 50 },
+        { name: 'Baja', value: 25 },
       ]);
       
       setCompletionStats({
-        total: 45,
-        completed: 35,
-        pending: 10,
-        completionRate: 78
+        total: 10,
+        completed: 4,
+        pending: 6,
+        completionRate: 40
       });
     }
   }, [tasks]);
 
   const processStatistics = (tasks) => {
-    if (!tasks || tasks.length === 0) return;
+    if (!Array.isArray(tasks) || tasks.length === 0) return;
     
-    // Tareas por día
+    // Contadores
     const dayCount = {
       'Lun': 0, 'Mar': 0, 'Mié': 0, 'Jue': 0, 'Vie': 0, 'Sáb': 0, 'Dom': 0
     };
-    
-    // Tareas por categoría
     const categoryCount = {};
-    
-    // Tareas por prioridad
-    const priorityCount = {
-      'alta': 0, 'media': 0, 'baja': 0
-    };
-    
-    // Estadísticas de completado
+    const priorityCount = { 'alta': 0, 'media': 0, 'baja': 0 };
     let completed = 0;
+    
+    // Mapeo de día de la semana a abreviatura
+    const dayMap = {
+      0: 'Dom', 1: 'Lun', 2: 'Mar', 3: 'Mié', 4: 'Jue', 5: 'Vie', 6: 'Sáb'
+    };
     
     tasks.forEach(task => {
       // Contar por día si tiene fecha
       if (task.date) {
         const date = new Date(task.date);
         const day = date.getDay(); // 0 = domingo, 1 = lunes, ...
-        const dayName = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'][day];
-        dayCount[dayName]++;
-      } else {
-        // Si no tiene fecha, usar el día de la semana asignado
-        Object.entries(window.tasks || {}).forEach(([dayName, dayTasks]) => {
-          if (dayTasks.some(t => t.id === task.id)) {
-            const shortDay = dayName.substring(0, 3);
-            dayCount[shortDay]++;
-          }
-        });
+        dayCount[dayMap[day]]++;
       }
       
       // Contar por categoría
@@ -134,44 +121,48 @@ const StatisticsPanel = ({ tasks = {} }) => {
     });
   };
 
-  const COLORS = ['#4f46e5', '#6366f1', '#818cf8', '#a5b4fc', '#c7d2fe'];
+  // Colores para los gráficos
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
   const PRIORITY_COLORS = {
-    'Alta': '#ef4444', // rojo
-    'Media': '#f59e0b', // ámbar
-    'Baja': '#10b981', // verde
+    'Alta': '#ef4444',
+    'Media': '#f59e0b',
+    'Baja': '#10b981'
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">Panel de Estadísticas</h2>
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
       
-      {Object.values(tasks).flat().length === 0 ? (
+      {Array.isArray(tasks) && tasks.length === 0 ? (
         <div className="text-center py-8 bg-gray-50 dark:bg-gray-800 rounded-lg">
-          <p className="text-gray-500 dark:text-gray-400">No hay datos suficientes para mostrar estadísticas.</p>
-          <p className="text-gray-500 dark:text-gray-400 mt-2">Añade algunas tareas para ver las estadísticas.</p>
+          <p className="text-gray-500 dark:text-gray-400">No hay suficientes datos para mostrar estadísticas.</p>
         </div>
       ) : (
-        <>
-          <div className="grid md:grid-cols-2 gap-6 mb-6">
-            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-              <h3 className="text-lg font-semibold text-indigo-500 dark:text-indigo-400 mb-4">Tareas por Día</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Gráfico de tareas por día */}
+          <div>
+            <h3 className="text-lg font-medium mb-4">Tareas por día</h3>
+            <div className="h-64">
               <ResponsiveContainer width="100%" height={250}>
                 <BarChart data={tasksByDay}>
                   <XAxis dataKey="day" />
                   <YAxis />
                   <Tooltip 
                     formatter={(value) => [`${value} tareas`, 'Cantidad']}
-                    contentStyle={{ backgroundColor: '#fff', borderColor: '#ddd' }}
+                    labelFormatter={(label) => `Día: ${label}`}
                   />
                   <Bar dataKey="tasks" fill="#4f46e5" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
-
-            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-              <h3 className="text-lg font-semibold text-indigo-500 dark:text-indigo-400 mb-4">Tareas por Categoría</h3>
+          </div>
+          
+          {/* Gráfico de tareas por categoría */}
+          <div>
+            <h3 className="text-lg font-medium mb-4">Tareas por categoría</h3>
+            <div className="h-64">
               <ResponsiveContainer width="100%" height={250}>
                 <PieChart>
+                  <Tooltip formatter={(value) => [`${value} tareas`, 'Cantidad']} />
                   <Pie
                     data={tasksByCategory}
                     cx="50%"
@@ -180,24 +171,25 @@ const StatisticsPanel = ({ tasks = {} }) => {
                     outerRadius={80}
                     fill="#8884d8"
                     dataKey="value"
-                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    nameKey="name"
+                    label={({name, percent}) => `${name}: ${(percent * 100).toFixed(0)}%`}
                   >
                     {tasksByCategory.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(value) => [`${value} tareas`, 'Cantidad']} />
-                  <Legend />
                 </PieChart>
               </ResponsiveContainer>
             </div>
           </div>
-
-          <div className="grid md:grid-cols-2 gap-6 mb-6">
-            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-              <h3 className="text-lg font-semibold text-indigo-500 dark:text-indigo-400 mb-4">Tareas por Prioridad</h3>
+          
+          {/* Gráfico de tareas por prioridad */}
+          <div>
+            <h3 className="text-lg font-medium mb-4">Tareas por prioridad</h3>
+            <div className="h-64">
               <ResponsiveContainer width="100%" height={250}>
                 <PieChart>
+                  <Tooltip formatter={(value) => [`${value} tareas`, 'Cantidad']} />
                   <Pie
                     data={tasksByPriority}
                     cx="50%"
@@ -206,41 +198,47 @@ const StatisticsPanel = ({ tasks = {} }) => {
                     outerRadius={80}
                     fill="#8884d8"
                     dataKey="value"
-                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    nameKey="name"
+                    label={({name, percent}) => `${name}: ${(percent * 100).toFixed(0)}%`}
                   >
                     {tasksByPriority.map((entry) => (
                       <Cell key={`cell-${entry.name}`} fill={PRIORITY_COLORS[entry.name]} />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(value) => [`${value} tareas`, 'Cantidad']} />
-                  <Legend />
                 </PieChart>
               </ResponsiveContainer>
             </div>
-
-            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-              <h3 className="text-lg font-semibold text-indigo-500 dark:text-indigo-400 mb-4">Resumen de Productividad</h3>
+          </div>
+          
+          {/* Estadísticas de completado */}
+          <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+            <h3 className="text-lg font-medium mb-4">Resumen de progreso</h3>
+            <div className="space-y-4">
+              <div>
+                <div className="flex justify-between mb-1">
+                  <span>Completado ({completionStats.completionRate}%)</span>
+                  <span>{completionStats.completed}/{completionStats.total}</span>
+                </div>
+                <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5">
+                  <div 
+                    className="bg-indigo-600 h-2.5 rounded-full" 
+                    style={{ width: `${completionStats.completionRate}%` }}
+                  ></div>
+                </div>
+              </div>
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-indigo-50 dark:bg-gray-700 p-4 rounded">
-                  <p className="text-gray-600 dark:text-gray-300">Total de Tareas</p>
-                  <p className="text-2xl font-bold text-indigo-700 dark:text-indigo-400">{completionStats.total}</p>
+                <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
+                  <div className="text-sm text-gray-500 dark:text-gray-400">Pendientes</div>
+                  <div className="text-2xl font-bold">{completionStats.pending}</div>
                 </div>
-                <div className="bg-green-50 dark:bg-green-900 p-4 rounded">
-                  <p className="text-gray-600 dark:text-gray-300">Tareas Completadas</p>
-                  <p className="text-2xl font-bold text-green-600 dark:text-green-400">{completionStats.completed}</p>
-                </div>
-                <div className="bg-red-50 dark:bg-red-900 p-4 rounded">
-                  <p className="text-gray-600 dark:text-gray-300">Tareas Pendientes</p>
-                  <p className="text-2xl font-bold text-red-600 dark:text-red-400">{completionStats.pending}</p>
-                </div>
-                <div className="bg-yellow-50 dark:bg-yellow-900 p-4 rounded">
-                  <p className="text-gray-600 dark:text-gray-300">Porcentaje Completado</p>
-                  <p className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{completionStats.completionRate}%</p>
+                <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
+                  <div className="text-sm text-gray-500 dark:text-gray-400">Completadas</div>
+                  <div className="text-2xl font-bold">{completionStats.completed}</div>
                 </div>
               </div>
             </div>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
