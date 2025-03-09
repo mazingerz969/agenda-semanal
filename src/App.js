@@ -5,6 +5,8 @@ import MonthlyCalendar from './components/MonthlyCalendar';
 import StatisticsPanel from './components/StatisticsPanel';
 import SearchFilter from './components/SearchFilter';
 import UserAvatar from './components/UserAvatar';
+import NotificationSystem from './components/NotificationSystem';
+import DataManager from './components/DataManager';
 
 function App() {
   const [activeView, setActiveView] = useState('weekly');
