@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { X, Plus, Tag } from 'lucide-react';
 
 const COLORS = [
@@ -83,7 +83,7 @@ function TagSelector({ selectedTags = [], onChange }) {
           return (
             <span 
               key={tag.id} 
-              className={inline-flex items-center px-2 py-1 rounded-md text-xs font-medium   }
+              className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium ${color.bg} ${color.text} ${color.dark}`}
             >
               {tag.name}
               <button 
@@ -117,7 +117,9 @@ function TagSelector({ selectedTags = [], onChange }) {
                 <div key={tag.id} className="flex items-center">
                   <button
                     onClick={() => handleToggleTag(tag.id)}
-                    className={inline-flex items-center px-2 py-1 rounded-md text-xs font-medium    }
+                    className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium ${color.bg} ${color.text} ${color.dark} ${
+                      isSelected ? 'ring-2 ring-offset-2 ring-indigo-500 dark:ring-offset-gray-800' : ''
+                    }`}
                   >
                     {tag.name}
                   </button>
@@ -163,7 +165,9 @@ function TagSelector({ selectedTags = [], onChange }) {
                   <button
                     key={index}
                     onClick={() => setNewTag({ ...newTag, color: index })}
-                    className={w-5 h-5 rounded-full   mr-1}
+                    className={`w-5 h-5 rounded-full ${color.bg} ${
+                      newTag.color === index ? 'ring-2 ring-offset-2 ring-indigo-500 dark:ring-offset-gray-800' : ''
+                    } mr-1`}
                   />
                 ))}
               </div>
@@ -189,4 +193,4 @@ function TagSelector({ selectedTags = [], onChange }) {
   );
 }
 
-export default TagSelector;
+export default TagSelector; 

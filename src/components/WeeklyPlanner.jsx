@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Plus, Check, X, Edit2, Trash2, Tag } from 'lucide-react';
 import TagSelector from './TagSelector';
 
@@ -107,7 +107,11 @@ function WeeklyPlanner({ tasks = [], setTasks }) {
           <button
             key={day.id}
             onClick={() => setSelectedDay(day.id)}
-            className={lex-1 py-3 text-center }
+            className={`flex-1 py-3 text-center ${
+              selectedDay === day.id
+                ? 'bg-indigo-50 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-300 font-medium'
+                : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700'
+            }`}
           >
             <span className="hidden md:block">{day.name}</span>
             <span className="md:hidden">{day.shortName}</span>
@@ -148,18 +152,30 @@ function WeeklyPlanner({ tasks = [], setTasks }) {
               return (
                 <div
                   key={task.id}
-                  className={p-3 rounded-md border }
+                  className={`p-3 rounded-md border ${
+                    task.completed
+                      ? 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900'
+                      : task.priority === 'high'
+                      ? 'border-red-200 dark:border-red-900 bg-red-50 dark:bg-red-900/20'
+                      : task.priority === 'medium'
+                      ? 'border-yellow-200 dark:border-yellow-900 bg-yellow-50 dark:bg-yellow-900/20'
+                      : 'border-green-200 dark:border-green-900 bg-green-50 dark:bg-green-900/20'
+                  }`}
                 >
                   <div className="flex justify-between items-start">
                     <div className="flex items-start gap-2">
                       <button
                         onClick={() => handleToggleComplete(task.id)}
-                        className={mt-1 p-1 rounded-full }
+                        className={`mt-1 p-1 rounded-full ${
+                          task.completed
+                            ? 'bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300'
+                            : 'bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-gray-500'
+                        }`}
                       >
                         <Check size={14} />
                       </button>
                       <div>
-                        <h3 className={ont-medium }>
+                        <h3 className={`font-medium ${task.completed ? 'line-through text-gray-400 dark:text-gray-500' : ''}`}>
                           {task.title}
                         </h3>
                         {task.description && (
@@ -187,7 +203,7 @@ function WeeklyPlanner({ tasks = [], setTasks }) {
                               return (
                                 <span 
                                   key={tag.id} 
-                                  className={inline-flex items-center px-2 py-0.5 rounded text-xs font-medium   }
+                                  className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${color.bg} ${color.text} ${color.dark}`}
                                 >
                                   {tag.name}
                                 </span>
@@ -327,4 +343,4 @@ function WeeklyPlanner({ tasks = [], setTasks }) {
   );
 }
 
-export default WeeklyPlanner;
+export default WeeklyPlanner; 
