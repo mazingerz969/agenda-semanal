@@ -1,41 +1,63 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 // Crear el contexto
-const ThemeContext = createContext();
+export const ThemeContext = createContext();
 
 // Hook personalizado para usar el contexto
 export const useTheme = () => useContext(ThemeContext);
 
 // Proveedor del contexto
 export const ThemeProvider = ({ children }) => {
-  // Obtener el tema del localStorage o usar 'light' como predeterminado
-  const [theme, setTheme] = useState(() => {
-    const savedTheme = localStorage.getItem('theme');
-    return savedTheme || 'light';
-  });
+  // Estado para el modo oscuro
+  const [darkMode, setDarkMode] = useState(false);
 
-  // Actualizar el tema en el DOM y localStorage cuando cambia
+  // Cargar preferencia del usuario al iniciar
   useEffect(() => {
-    const root = window.document.documentElement;
+    // Verificar si hay una preferencia guardada
+    const savedTheme = localStorage.getItem('theme');
     
-    // Eliminar clases antiguas
-    root.classList.remove('light', 'dark');
+    // Verificar preferencia del sistema
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
-    // Añadir la clase del tema actual
-    root.classList.add(theme);
-    
-    // Guardar en localStorage
-    localStorage.setItem('theme', theme);
-  }, [theme]);
+    // Establecer el tema inicial
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      setDarkMode(true);
+      document.documentElement.classList.add('dark');
+    } else {
+      setDarkMode(false);
+      document.documentElement.classList.remove('dark');
+    }
+  }, []);
 
-  // Función para cambiar entre temas
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
+  // Función para cambiar el tema
+  const toggleDarkMode = () => {
+    setDarkMode(prevMode => {
+      const newMode = !prevMode;
+      
+      // Guardar preferencia en localStorage
+      localStorage.setItem('theme', newMode ? 'dark' : 'light');
+      
+      // Aplicar clase al elemento HTML
+      if (newMode) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      
+      console.log('Modo oscuro:', newMode ? 'activado' : 'desactivado');
+      
+      return newMode;
+    });
   };
 
-  // Proporcionar el tema y la función para cambiarlo
+  const value = {
+    darkMode,
+    setDarkMode,
+    toggleDarkMode
+  };
+  
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={value}>
       {children}
     </ThemeContext.Provider>
   );

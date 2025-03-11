@@ -6,6 +6,7 @@ import {
   TrialBanner 
 } from '../services/trialService';
 import { trackEvent, ANALYTICS_EVENTS } from '../services/analyticsService';
+import { Clock } from 'lucide-react';
 
 const TrialManager = () => {
   const [trialStatus, setTrialStatus] = useState(null);
@@ -54,10 +55,20 @@ const TrialManager = () => {
   }
   
   return (
-    <TrialBanner 
-      onStartTrial={handleStartTrial}
-      onViewPlans={handleViewPlans}
-    />
+    <div className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-2 px-3 text-center text-sm">
+      <div className="flex items-center justify-center flex-wrap gap-2">
+        <span className="flex items-center">
+          <Clock className="h-4 w-4 mr-1" />
+          Estás disfrutando de tu prueba gratuita. Quedan 14 días.
+        </span>
+        <button 
+          className="bg-white text-indigo-600 px-2 py-0.5 rounded-md text-xs font-medium hover:bg-opacity-90"
+          onClick={handleViewPlans}
+        >
+          Más información
+        </button>
+      </div>
+    </div>
   );
 };
 
