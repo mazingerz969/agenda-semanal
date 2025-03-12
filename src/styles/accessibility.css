@@ -1,0 +1,124 @@
+/* Estilos para modo de alto contraste */
+.high-contrast {
+  --bg-primary: #000000;
+  --bg-secondary: #1a1a1a;
+  --text-primary: #ffffff;
+  --text-secondary: #f0f0f0;
+  --accent-color: #ffff00;
+  --border-color: #ffffff;
+}
+
+.high-contrast .dark {
+  --bg-primary: #000000;
+  --bg-secondary: #1a1a1a;
+  --text-primary: #ffffff;
+  --text-secondary: #f0f0f0;
+  --accent-color: #ffff00;
+  --border-color: #ffffff;
+}
+
+.high-contrast body,
+.high-contrast .bg-white,
+.high-contrast .bg-gray-100,
+.high-contrast .bg-gray-200 {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+.high-contrast .dark\:bg-gray-800,
+.high-contrast .dark\:bg-gray-900,
+.high-contrast .dark\:bg-gray-700 {
+  background-color: var(--bg-secondary) !important;
+}
+
+.high-contrast .text-gray-800,
+.high-contrast .text-gray-700,
+.high-contrast .text-gray-900,
+.high-contrast .dark\:text-gray-200,
+.high-contrast .dark\:text-gray-300,
+.high-contrast .dark\:text-white {
+  color: var(--text-primary) !important;
+}
+
+.high-contrast .border,
+.high-contrast .border-gray-200,
+.high-contrast .border-gray-300,
+.high-contrast .dark\:border-gray-700 {
+  border-color: var(--border-color) !important;
+}
+
+.high-contrast .bg-indigo-600,
+.high-contrast .bg-indigo-500,
+.high-contrast .bg-blue-600,
+.high-contrast .bg-green-600,
+.high-contrast .bg-red-600 {
+  background-color: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+/* Estilos para texto grande */
+.large-text {
+  font-size: 1.2rem;
+}
+
+.large-text h1 {
+  font-size: 2.4rem;
+}
+
+.large-text h2 {
+  font-size: 2rem;
+}
+
+.large-text h3 {
+  font-size: 1.8rem;
+}
+
+.large-text p, 
+.large-text span, 
+.large-text button,
+.large-text input,
+.large-text label {
+  font-size: 1.2rem;
+}
+
+.large-text .text-xs {
+  font-size: 1rem;
+}
+
+.large-text .text-sm {
+  font-size: 1.1rem;
+}
+
+/* Estilos para reducir movimiento */
+.reduced-motion * {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
+
+/* Estilos para modo lector de pantalla */
+.screen-reader .sr-only {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 0.5rem !important;
+  margin: 0.5rem 0 !important;
+  overflow: visible !important;
+  clip: auto !important;
+  white-space: normal !important;
+  border: 1px solid #ccc !important;
+  display: block !important;
+}
+
+.screen-reader .visually-hidden {
+  display: block !important;
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 0.5rem !important;
+  margin: 0.5rem 0 !important;
+  overflow: visible !important;
+  clip: auto !important;
+  white-space: normal !important;
+  border: 1px solid #ccc !important;
+} 
