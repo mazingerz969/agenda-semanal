@@ -1,5 +1,10 @@
-<<<<<<< HEAD
-import React, { useState, useEffect } from 'react';
+import React, { 
+  useState, 
+  useEffect, 
+  lazy, 
+  Suspense, 
+  useCallback 
+} from 'react';
 import NotificationSystem from './components/NotificationSystem';
 import DataManager from './components/DataManager';
 import MonthlyCalendar from './components/MonthlyCalendar';
@@ -7,14 +12,7 @@ import StatisticsPanel from './components/StatisticsPanel';
 import WeeklyPlanner from './components/WeeklyPlanner';
 import ThemeToggle from './components/ThemeToggle';
 import { ThemeProvider } from './context/ThemeContext';
-=======
-import React, { useState, useEffect, lazy, Suspense, useCallback } from 'react';
-import { BrowserRouter, Routes, Route, useLocation, Link } from 'react-router-dom';
-import NotificationSystem from './components/NotificationSystem';
-import DataManager from './components/DataManager';
-import ThemeToggle from './components/ThemeToggle';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
->>>>>>> origin/feature/fix-darkmode-and-assistant
+
 import { 
   Calendar, 
   BarChart3, 
@@ -27,23 +25,15 @@ import {
   CheckCircle2,
   AlertCircle,
   Tag,
-<<<<<<< HEAD
-  Trophy
-} from 'lucide-react';
-import GamificationSystem from './components/GamificationSystem';
-import MobileView from './components/MobileView';
-
-function App() {
-=======
   Trophy,
   CreditCard
 } from 'lucide-react';
+import GamificationSystem from './components/GamificationSystem';
 import MobileView from './components/MobileView';
+import { Icono1, Icono2, Icono3, Icono4 } from 'lucide-react';
 import TrialManager from './components/TrialManager';
 import { initializeAnalytics, trackEvent, ANALYTICS_EVENTS } from './services/analyticsService';
 import PremiumFeature from './components/PremiumFeature';
-import WeeklyPlanner from './components/WeeklyPlanner';
-import { productivityAnalytics } from './services/productivityAnalytics';
 import ProductivityPanel from './components/ProductivityPanel';
 import TaskTimer from './components/TaskTimer';
 import AIAssistant from './components/AIAssistant';
@@ -72,13 +62,24 @@ const LoadingFallback = () => (
   </div>
 );
 
+// Componentes principales
+import WeeklyPlanner from './components/WeeklyPlanner';
+import MobileView from './components/MobileView';
+
+// Otros componentes (agrupar por funcionalidad)
+import { 
+  PremiumFeature,
+  ProductivityPanel,
+  TaskTimer 
+} from './components';
+
 function App() {
   // Eliminar o comentar estos estados
   const [isAssistantOpen, setIsAssistantOpen] = useState(false);
   const [assistantMessage, setAssistantMessage] = useState('¿En qué puedo ayudarte hoy?');
   const [userInput, setUserInput] = useState('');
   
->>>>>>> origin/feature/fix-darkmode-and-assistant
+
   // Estado para almacenar las tareas - asegurarse de que sea un array
   const [tasks, setTasks] = useState([]);
   // Estado para controlar la vista actual (semanal o mensual)
@@ -89,17 +90,17 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   // Estado para mostrar/ocultar gamificación
   const [showGamification, setShowGamification] = useState(false);
-<<<<<<< HEAD
-=======
+
+
   // Estado para la tarea actual en edición
   const [currentEditingTask, setCurrentEditingTask] = useState(null);
   // Estado para el modo oscuro
   const [darkMode, setDarkMode] = useState(false);
->>>>>>> origin/feature/fix-darkmode-and-assistant
+
 
   // Inicializar analítica
   useEffect(() => {
-<<<<<<< HEAD
+
     const savedTasks = localStorage.getItem('agenda-tasks');
     if (savedTasks) {
       try {
@@ -144,7 +145,7 @@ function App() {
 
   // Guardar tareas en localStorage cuando cambian
   useEffect(() => {
-=======
+
     initializeAnalytics();
   }, []);
 
@@ -206,7 +207,7 @@ function App() {
 
   // Guardar tareas en localStorage cuando cambian
   useEffect(() => {
->>>>>>> origin/feature/fix-darkmode-and-assistant
+
     localStorage.setItem('agenda-tasks', JSON.stringify(tasks));
   }, [tasks]);
 
@@ -216,27 +217,27 @@ function App() {
     : [];
 
   // Función para añadir una nueva tarea rápida
-<<<<<<< HEAD
+
   const addQuickTask = () => {
     const newTask = {
       id: Date.now(),
-=======
+
   const addQuickTask = useCallback(() => {
     console.log("Añadiendo nueva tarea..."); // Log para depuración
     
     // Crear nueva tarea con ID único
     const newTask = {
       id: Date.now().toString(),
->>>>>>> origin/feature/fix-darkmode-and-assistant
+
       title: 'Nueva tarea',
       date: new Date().toISOString(),
       priority: 'medium',
       completed: false,
-<<<<<<< HEAD
+
       tags: []
     };
     setTasks([...tasks, newTask]);
-=======
+
       category: '',
       tags: []
     };
@@ -323,7 +324,7 @@ function App() {
     }
     
     trackEvent('AI', 'apply_suggestion', type);
->>>>>>> origin/feature/fix-darkmode-and-assistant
+
   };
 
   const theme = createTheme({
@@ -334,7 +335,7 @@ function App() {
   });
 
   return (
-<<<<<<< HEAD
+
     <ThemeProvider>
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
         <header className="bg-white dark:bg-gray-800 shadow-sm">
@@ -568,7 +569,7 @@ function App() {
           </div>
         </footer>
       </div>
-=======
+
     <ThemeProvider theme={theme}>
       {/* Comentar componentes problemáticos */}
       {/* <AnalyticsTracker /> */}
@@ -935,7 +936,7 @@ function App() {
       </Routes>
       
       <AIAssistant />
->>>>>>> origin/feature/fix-darkmode-and-assistant
+
     </ThemeProvider>
   );
 }

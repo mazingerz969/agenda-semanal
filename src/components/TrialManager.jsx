@@ -73,3 +73,4 @@ const TrialManager = () => {
 };
 
 export default TrialManager;
+

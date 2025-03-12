@@ -1,4 +1,4 @@
-ï»¿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
 
 function MonthlyCalendar({ tasks = [] }) {
@@ -12,7 +12,7 @@ function MonthlyCalendar({ tasks = [] }) {
     return new Date(year, month, 1).getDay();
   };
   
-  // FunciÃ³n para obtener las tareas de un dÃ­a especÃ­fico
+  // Función para obtener las tareas de un día específico
   const getTasksForDay = (day) => {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
@@ -36,19 +36,19 @@ function MonthlyCalendar({ tasks = [] }) {
     
     return (
       <div className="grid grid-cols-7 gap-1">
-        {/* DÃ­as de la semana */}
-        {['Dom', 'Lun', 'Mar', 'MiÃ©', 'Jue', 'Vie', 'SÃ¡b'].map(day => (
+        {/* Días de la semana */}
+        {['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'].map(day => (
           <div key={day} className="text-center font-medium py-2">
             {day}
           </div>
         ))}
         
-        {/* Espacios vacÃ­os para el primer dÃ­a */}
+        {/* Espacios vacíos para el primer día */}
         {Array.from({ length: firstDay }).map((_, index) => (
           <div key={`empty-${index}`} className="h-24 bg-gray-50 dark:bg-gray-800 rounded-md"></div>
         ))}
         
-        {/* DÃ­as del mes */}
+        {/* Días del mes */}
         {Array.from({ length: daysInMonth }).map((_, index) => {
           const day = index + 1;
           const dayTasks = getTasksForDay(day);
@@ -113,3 +113,4 @@ function MonthlyCalendar({ tasks = [] }) {
 }
 
 export default MonthlyCalendar;
+

@@ -97,3 +97,4 @@ export const showUpgradeMessage = (feature) => {
     upgradeUrl: '/pricing'
   };
 };
+

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-<<<<<<< HEAD
+
 import { Plus, Check, X, Edit2, Trash2, Tag } from 'lucide-react';
 import TagSelector from './TagSelector';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
@@ -484,7 +484,7 @@ function WeeklyPlanner({ tasks, setTasks }) {
 }
 
 export default WeeklyPlanner; 
-=======
+
 import { trackEvent, ANALYTICS_EVENTS } from '../services/analyticsService';
 // ... otros imports
 
@@ -521,4 +521,5 @@ const WeeklyPlanner = () => {
 };
 
 export default WeeklyPlanner;
->>>>>>> origin/feature/fix-darkmode-and-assistant
+
+

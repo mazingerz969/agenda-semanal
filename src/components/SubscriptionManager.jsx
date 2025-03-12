@@ -108,3 +108,4 @@ const SubscriptionManager = ({ currentUser, onUpgrade }) => {
 };
 
 export default SubscriptionManager;
+

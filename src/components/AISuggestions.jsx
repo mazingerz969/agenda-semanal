@@ -87,3 +87,4 @@ const AISuggestions = ({ taskContent, onApplySuggestion }) => {
 };
 
 export default AISuggestions;
+

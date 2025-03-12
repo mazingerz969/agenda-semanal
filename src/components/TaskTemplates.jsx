@@ -206,3 +206,4 @@ const TaskTemplates = ({ tasks, onApplyTemplate }) => {
 };
 
 export default TaskTemplates;
+

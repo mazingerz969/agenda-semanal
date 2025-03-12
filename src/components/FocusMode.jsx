@@ -146,3 +146,4 @@ const FocusMode = ({ onEnterFocusMode, onExitFocusMode }) => {
 };
 
 export default FocusMode;
+

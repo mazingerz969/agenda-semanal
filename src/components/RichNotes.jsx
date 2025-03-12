@@ -161,3 +161,4 @@ const RichNotes = ({ taskId, initialNote = '', onSave }) => {
 };
 
 export default RichNotes;
+

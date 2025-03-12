@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import React, { useState } from 'react';
 import { Calendar, List, ChevronLeft, ChevronRight, Plus, Edit, Trash2, Check } from 'lucide-react';
 
@@ -139,7 +139,7 @@ function MobileView({ tasks, setTasks }) {
           >
             <Plus size={16} className="mr-1" />
             Añadir tarea
-=======
+
 import React, { useState, useCallback } from 'react';
 import { Calendar, List, CheckCircle, Clock, AlertCircle, Filter, Menu, X, Plus, BarChart3, Trophy, Download, Upload } from 'lucide-react';
 import { trackEvent } from '../services/analyticsService';
@@ -371,12 +371,12 @@ const MobileView = ({ tasks = [], setTasks, showStats, setShowStats, showGamific
           >
             <AlertCircle size={16} className="mx-auto mb-1" />
             <span className="text-xs">Prioritarias</span>
->>>>>>> origin/feature/fix-darkmode-and-assistant
+
           </button>
         </div>
       </div>
       
-<<<<<<< HEAD
+
       {/* Lista de tareas */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
         <h3 className="text-lg font-medium mb-4 flex items-center">
@@ -414,7 +414,7 @@ const MobileView = ({ tasks = [], setTasks, showStats, setShowStats, showGamific
                       {task.description && (
                         <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                           {task.description}
-=======
+
       {/* Espacio para que el contenido no quede debajo de la barra fija */}
       <div className="pt-28"></div>
       
@@ -536,12 +536,12 @@ const MobileView = ({ tasks = [], setTasks, showStats, setShowStats, showGamific
                           {task.tags.map(tagId => (
                             <span key={tagId} className="w-2 h-2 rounded-full bg-blue-400"></span>
                           ))}
->>>>>>> origin/feature/fix-darkmode-and-assistant
+
                         </div>
                       )}
                     </div>
                   </div>
-<<<<<<< HEAD
+
                   
                   <div className="flex space-x-2">
                     <button 
@@ -573,14 +573,14 @@ const MobileView = ({ tasks = [], setTasks, showStats, setShowStats, showGamific
                   <span className="text-xs text-gray-500 dark:text-gray-400 capitalize">
                     Prioridad {task.priority === 'high' ? 'alta' : task.priority === 'medium' ? 'media' : 'baja'}
                   </span>
-=======
->>>>>>> origin/feature/fix-darkmode-and-assistant
+
+
                 </div>
               </li>
             ))}
           </ul>
         ) : (
-<<<<<<< HEAD
+
           <div className="text-center py-8 text-gray-500 dark:text-gray-400">
             <Calendar className="h-12 w-12 mx-auto mb-3 text-gray-400 dark:text-gray-500" />
             <p>No hay tareas para este día</p>
@@ -591,17 +591,17 @@ const MobileView = ({ tasks = [], setTasks, showStats, setShowStats, showGamific
               <Plus size={16} className="mr-1" />
               Añadir tarea
             </button>
-=======
+
           <div className="p-4 text-center text-gray-500 dark:text-gray-400">
             <List className="h-10 w-10 mx-auto mb-2 opacity-30" />
             <p className="text-sm">No hay tareas para mostrar</p>
             <p className="text-xs mt-1">Ajusta los filtros o añade nuevas tareas</p>
->>>>>>> origin/feature/fix-darkmode-and-assistant
+
           </div>
         )}
       </div>
       
-<<<<<<< HEAD
+
       {/* Modal para añadir tarea */}
       {showAddTask && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -678,7 +678,7 @@ const MobileView = ({ tasks = [], setTasks, showStats, setShowStats, showGamific
 }
 
 export default MobileView; 
-=======
+
       {/* Botón flotante para añadir tarea */}
       <button
         onClick={addQuickTask}
@@ -719,4 +719,5 @@ export default MobileView;
 };
 
 export default React.memo(MobileView); 
->>>>>>> origin/feature/fix-darkmode-and-assistant
+
+

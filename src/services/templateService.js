@@ -106,3 +106,4 @@ export const applyTemplate = async (template) => {
     }, 1000);
   });
 };
+

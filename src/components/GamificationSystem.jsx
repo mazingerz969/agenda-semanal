@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import React, { useState, useEffect } from 'react';
 import { Trophy, Star, Flame, Award, Target, TrendingUp } from 'lucide-react';
 
@@ -291,7 +291,7 @@ function GamificationSystem({ tasks }) {
     </div>
   );
 }
-=======
+
 import React, { useMemo } from 'react';
 import { Trophy, Award, TrendingUp } from 'lucide-react';
 
@@ -448,6 +448,6 @@ const GamificationSystem = ({ tasks = [] }) => {
     </div>
   );
 };
->>>>>>> origin/feature/fix-darkmode-and-assistant
+
 
 export default GamificationSystem; 

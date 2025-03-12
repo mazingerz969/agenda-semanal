@@ -83,3 +83,4 @@ const WorkspaceIntegrations = () => {
 };
 
 export default WorkspaceIntegrations;
+

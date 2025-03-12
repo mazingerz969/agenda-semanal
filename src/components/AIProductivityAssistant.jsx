@@ -111,3 +111,4 @@ const AIProductivityAssistant = ({ tasks, userActivity }) => {
 };
 
 export default AIProductivityAssistant;
+

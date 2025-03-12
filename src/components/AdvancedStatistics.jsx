@@ -291,3 +291,4 @@ const AdvancedStatistics = ({ tasks }) => {
 };
 
 export default AdvancedStatistics;
+

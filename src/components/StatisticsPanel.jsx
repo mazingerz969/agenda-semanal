@@ -1,11 +1,11 @@
-Ôªøimport React, { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 function StatisticsPanel({ tasks = [] }) {
-  // Datos para el gr√°fico de barras (tareas por d√≠a)
+  // Datos para el gr·fico de barras (tareas por dÌa)
   const tasksByDay = useMemo(() => {
-    const days = ['Domingo', 'Lunes', 'Martes', 'Mi√©rcoles', 'Jueves', 'Viernes', 'S√°bado'];
-    const shortDays = ['Dom', 'Lun', 'Mar', 'Mi√©', 'Jue', 'Vie', 'S√°b'];
+    const days = ['Domingo', 'Lunes', 'Martes', 'MiÈrcoles', 'Jueves', 'Viernes', 'S·bado'];
+    const shortDays = ['Dom', 'Lun', 'Mar', 'MiÈ', 'Jue', 'Vie', 'S·b'];
     
     const countByDay = Array(7).fill(0);
     
@@ -22,7 +22,7 @@ function StatisticsPanel({ tasks = [] }) {
     }));
   }, [tasks]);
   
-  // Datos para el gr√°fico circular (tareas por prioridad)
+  // Datos para el gr·fico circular (tareas por prioridad)
   const tasksByPriority = useMemo(() => {
     const priorities = {
       high: { name: 'Alta', count: 0, color: '#EF4444' },
@@ -39,7 +39,7 @@ function StatisticsPanel({ tasks = [] }) {
     return Object.values(priorities).filter(p => p.count > 0);
   }, [tasks]);
   
-  // Estad√≠sticas generales
+  // EstadÌsticas generales
   const stats = useMemo(() => {
     const completed = tasks.filter(task => task.completed).length;
     const pending = tasks.length - completed;
@@ -55,12 +55,12 @@ function StatisticsPanel({ tasks = [] }) {
   
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-      <h2 className="text-xl font-bold mb-4">Estad√≠sticas de productividad</h2>
+      <h2 className="text-xl font-bold mb-4">EstadÌsticas de productividad</h2>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Gr√°fico de barras */}
+        {/* Gr·fico de barras */}
         <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
-          <h3 className="text-lg font-medium mb-2">Tareas por d√≠a</h3>
+          <h3 className="text-lg font-medium mb-2">Tareas por dÌa</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={tasksByDay}>
@@ -76,7 +76,7 @@ function StatisticsPanel({ tasks = [] }) {
           </div>
         </div>
         
-        {/* Gr√°fico circular */}
+        {/* Gr·fico circular */}
         <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
           <h3 className="text-lg font-medium mb-2">Tareas por prioridad</h3>
           <div className="h-64">
@@ -102,7 +102,7 @@ function StatisticsPanel({ tasks = [] }) {
         </div>
       </div>
       
-      {/* Estad√≠sticas generales */}
+      {/* EstadÌsticas generales */}
       <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-indigo-50 dark:bg-indigo-900 p-3 rounded-lg">
           <h4 className="text-sm font-medium text-indigo-500 dark:text-indigo-300">Total de tareas</h4>
@@ -129,3 +129,4 @@ function StatisticsPanel({ tasks = [] }) {
 }
 
 export default StatisticsPanel;
+
